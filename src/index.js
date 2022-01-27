@@ -20,7 +20,7 @@ app.use("/content", express.static(path.join(__dirname, "public"))); //allows fo
 
 app.get("/", (_, res) => {
   res.header("Content-Type", "application/html")
-  //res.status(200).end();
+  res.status(200).end();
   res.sendFile("/public/index.html", { root: __dirname });
   
 });
@@ -54,12 +54,11 @@ app.get("/todos/overdue", (req, res) => {
   //const month = getMonth()
   const overDueTodo = todos.find((todo) => date > todo.due)
     res.header("Content-Type", "application/ json"); 
-    res.status(200).end()
+    res.status(200)
     res.send(overDueTodo);
     
    }
 );
-
 
 //Add GET request with path '/todos/completed'
 app.get ("/todos/completed", (_, res) => {
@@ -68,8 +67,8 @@ app.get ("/todos/completed", (_, res) => {
     res.header("Content-Type", "application/ json");
     
    //do i need res.sendFile(todoFilePath, { root: __dirname }); here??????
-    
-   res.status(200).end();
+
+    res.status(200).end();
     res.send(completedTodo); 
 });
 
