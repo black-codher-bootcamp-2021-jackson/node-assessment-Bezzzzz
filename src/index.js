@@ -43,23 +43,26 @@ app.get('/todos', (_, res) => {
 // ***********DOESN'T WORK JUST DOWNLOADS EMPTY TEXT FILE***************
 //Add GET request with path '/todos/overdue'
 app.get("/todos/overdue", (req, res) => {
+  res.header("Content-Type", "application/ json"); 
+
   let date = new Date();
   //const month = getMonth()
-  const overDueTodo = todos.find((todo) => date > todo.due)
-    res.header("Content-Type", "application/ json"); 
+  const overDueTodo = todos.find((todo) => date < todo.due)
+    // res.header("Content-Type", "application/ json"); 
+     res.status(200)
     res.send(overDueTodo);
-    res.status(200)
-    
-    
+  
    }
 );
 
 // ********DOESN'T WORK JUST DOWNLOADS EMPTY TEXT FILE*********
 //Add GET request with path '/todos/completed'
 app.get ("/todos/completed", (_, res) => {
+  res.header("Content-Type", "application/ json");
+  
     let currentDate = new Date()
     const completedTodo = todos.find((todo) => currentDate > todo.due && todo.completed === true);
-    res.header("Content-Type", "application/ json");
+    // res.header("Content-Type", "application/ json");
     
    //do i need res.sendFile(todoFilePath, { root: __dirname }); here??????
     res.send(completedTodo); 
@@ -154,6 +157,10 @@ app.get("/todos/:id", (req,res) => {                              //parameter al
 
 
 //Add POST request with path '/todos/:id/undo
+
+
+
+
 
 
 
