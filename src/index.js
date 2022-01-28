@@ -77,6 +77,7 @@ app.get ("/todos/completed", (_, res) => {
 
 //Add POST request with path '/todos'
 //Add a new todo to the todo list 
+
 app.post("/todos", (req, res) => {
       // console.log("New add: ", req.body); - shows added array in the terminal 
       const newTodo = req.body;
@@ -84,12 +85,19 @@ app.post("/todos", (req, res) => {
 
       const newTodosArray = [...todos, newTodo]; //instead of modifying the current this creates a new array
   
- fs.writeFileSync(todosAbsoluteFilePath, JSON.stringify(newTodosArray))
+  fs.writeFileSync(todosAbsoluteFilePath, JSON.stringify(newTodosArray)) //json.stringify changes the context to a string that json can read
 
+  if(newTodosArray){
+    res.header("Content-Type", "application/json"); 
+    res.send("Created new Todo");
+    res.status(201)
+  
+  } 
+  else{  
+    res.send("Incorrect data submitted");
+    res.status(400).end();
 
-
-
-
+  }   
 });
 
 
