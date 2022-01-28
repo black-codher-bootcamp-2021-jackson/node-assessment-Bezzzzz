@@ -7,9 +7,11 @@ const PORT = 8080; //true constant that doesn't change that's why port is in upp
 const bodyParser = require('body-parser');
 const { v4: uuidv4 } = require('uuid'); //creates unique ids
 const todoFilePath = process.env.BASE_JSON_PATH;
+const todosAbsoluteFilePath = __dirname + todoFilePath;
+
 
 //Read todos from todos.json into variable
-let todos = require(__dirname + todoFilePath); //the array of objects
+let todos = require(todosAbsoluteFilePath); //the array of objects
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -20,7 +22,7 @@ app.use("/content", express.static(path.join(__dirname, "public"))); //allows fo
 
 app.get("/", (_, res) => {
   res.header("Content-Type", "application/html")
-  res.status(200).end();
+  res.status(200);
   res.sendFile("/public/index.html", { root: __dirname });
   
 });
@@ -68,15 +70,26 @@ app.get ("/todos/completed", (_, res) => {
     
    //do i need res.sendFile(todoFilePath, { root: __dirname }); here??????
 
-    res.status(200).end();
+    res.status(200);
     res.send(completedTodo); 
 });
 
 
 //Add POST request with path '/todos'
-//Add a new todo to the todo list
+//Add a new todo to the todo list 
 app.post("/todos", (req, res) => {
-      console.log("New add: ", req.body);
+      // console.log("New add: ", req.body); - shows added array in the terminal 
+      const newTodo = req.body;
+      // console.log("old todos", todos); 
+
+      const newTodosArray = [...todos, newTodo]; //instead of modifying the current this creates a new array
+  
+ fs.writeFileSync(todosAbsoluteFilePath, JSON.stringify(newTodosArray))
+
+
+
+
+
 });
 
 
