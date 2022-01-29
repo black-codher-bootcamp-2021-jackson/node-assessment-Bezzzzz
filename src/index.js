@@ -23,7 +23,7 @@ app.use(bodyParser.json()); // allows to send metadata to the header
 app.use("/content", express.static(path.join(__dirname, "public"))); //allows for static content from the html to be seen on localhost:8080/content
 
 
-// *********THIS DOESN'T WORK- JSUT DOWNLOADS EMPTY TEXT FILE- postman says 200 ok?**********
+// *********THIS DOESN'T WORK- JSUT DOWNLOADS EMPTY TEXT FILE- postman says 200 ok? and shows html**********
 app.get("/", (_, res) => {
   res.header("Content-Type", "application/html");
   res.status(200);
@@ -40,22 +40,20 @@ app.get('/todos', (_, res) => {
 });
 
 
-// ***********IN THE TERMINAL IT SHOWS OVERDUE BUT ON THE PATHWAY ON BROWSER NOTHING SHOWS***************
+// ***********WORKS BUT!-IN THE TERMINAL IT SHOWS OVERDUE BUT ON THE PATHWAY ON BROWSER NOTHING SHOWS***************
 //Add GET request with path '/todos/overdue'
 app.get("/todos/overdue", (req, res) => {
    res.header("Content-Type", "application/ json"); 
-
      const date = new Date('29 January 2022 18:09 UTC')
     //  console.log(date.toISOString()) -works
-    
+
     const overDueTodo = todos.find((todo) => date.toISOString() > todo.due && todo.completed === false); //if the current date is greater than the todo due date and not completed return this 
     console.log(overDueTodo) //- //works shows the array overdue
               //  res.send(overDueTodo);
              res.status(200);
   
-  
-
-
+     }
+);
   // if(overDueTodo){
   //       // res.todo.id
         
@@ -69,21 +67,21 @@ app.get("/todos/overdue", (req, res) => {
     //  res.status(200)
     //  res.send(overDueTodo);
   
-   }
-);
 
-// ********DOESN'T WORK JUST DOWNLOADS EMPTY TEXT FILE*********
+
+
+
+// ********WORKS IN TERMINAL BUT ONLY GIVES ONE ARRAY NOT TWO- NOTHING IN HTML FILE*********
 //Add GET request with path '/todos/completed'
 app.get ("/todos/completed", (req, res) => {
   res.header("Content-Type", "application/ json");
-      console.log(req.params.id)
+     
+  // let currentDate = new Date('29 January 2022 18:09 UTC')
+  const completedTodo = todos.find((todo) => todo.completed == true);
 
-
-    // let currentDate = new Date()
-    // const completedTodo = todos.find((todo) => currentDate > (todo.due) && todo.completed === true);
-    // // res.header("Content-Type", "application/ json");
-    // res.send(completedTodo); 
-    // res.status(200);
+    console.log(completedTodo) 
+  //  res.send(completedTodo); 
+   res.status(200);     //currentDate.toISOString() > (todo.due)
 
 });
 
