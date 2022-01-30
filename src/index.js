@@ -130,18 +130,23 @@ app.patch("/todos/:id", (req, res) => {
   // console.log(UpdatedTodo.name)
   // console.log(attributes.name) 
 
-  if(UpdatedTodo){
-    UpdatedTodo.name = attributes.name
-    // UpdatedTodo.due = attributes.due
+  if (UpdatedTodo) {
+    if (attributes.name !== undefined) {
+      UpdatedTodo.name = attributes.name                     // if attributes.name is equal then set it 
+    }
+    if (attributes.due !== undefined) { // due date is undefined because its not coming in the request body (attributes)
+      UpdatedTodo.due = attributes.due
+    }
 
+    fs.writeFileSync(todosAbsoluteFilePath, JSON.stringify(todos)) //first argument is the path and the second is the content
+
+    res.status(200);
+    res.send(UpdatedTodo);
+
+  } else {
+    res.status(400);
+    res.send("That todo does not exist");
   }
-// console.log(UpdatedTodo)
-// console.log(todos)
-
-
-fs.writeFileSync(todosAbsoluteFilePath, JSON.stringify(todos)) //first argument is the path and the second is the content
-
-  res.status(200).end();
 
 })
 
