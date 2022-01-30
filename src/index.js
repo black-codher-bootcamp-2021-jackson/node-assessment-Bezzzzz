@@ -23,12 +23,11 @@ app.use(bodyParser.json()); // allows to send metadata to the header
 app.use("/content", express.static(path.join(__dirname, "public"))); //allows for static content from the html to be seen on localhost:8080/content
 
 
-// *********THIS DOESN'T WORK- JSUT DOWNLOADS EMPTY TEXT FILE- postman says 200 ok? and shows html**********
+// *********THIS WORKS **********
 app.get("/", (_, res) => {
   res.header("Content-Type", "application/html");
+  res.sendFile("./public/index.html", { root: __dirname });
   res.status(200);
-  res.sendFile("/public/index.html", { root: __dirname });
- 
 });
 
 
@@ -152,7 +151,7 @@ app.post("/todos/:id/complete", (req, res) => {
 
 
 
-//  *****DOESN'T DELETE******
+//  *****THIS WORKS*****
 // Add DELETE request with path '/todos/:id
 app.delete("/todos/:id", (req, res) => {
   // console.log("this is a request id ", req.params.id);
