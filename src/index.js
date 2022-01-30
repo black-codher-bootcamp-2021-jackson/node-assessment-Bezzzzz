@@ -54,34 +54,20 @@ app.get("/todos/overdue", (req, res) => {
   
      }
 );
-  // if(overDueTodo){
-  //       // res.todo.id
-        
-  // } 
-  // else{
-  //   res.status(200).end();
-  //   res.send ("no overdue todos"); 
-  // }
   
-     // res.header("Content-Type", "application/ json"); 
-    //  res.status(200)
-    //  res.send(overDueTodo);
   
 
-
-
-
-// ********WORKS IN TERMINAL BUT ONLY GIVES ONE ARRAY NOT TWO- NOTHING IN HTML FILE*********
+// ******************WORKS*******************************
 //Add GET request with path '/todos/completed'
 app.get ("/todos/completed", (req, res) => {
-  res.header("Content-Type", "application/ json");
+  res.header("Content-Type", "application/json");
      
   // let currentDate = new Date('29 January 2022 18:09 UTC')
-  const completedTodo = todos.find((todo) => todo.completed == todo.completed || true);
+  const completedTodo = todos.filter((todo) => todo.completed === true);  //filter method will bring all the data that matches the condition however if you use the .find it only shows the first data that matches and not the rest.
 
-    console.log(completedTodo) 
-  //  res.send(completedTodo); 
-   res.status(200);     //currentDate.toISOString() > (todo.due)
+    //  console.log(completedTodo) 
+   res.send(completedTodo); 
+   res.status(200);     
 
 });
 
