@@ -118,7 +118,12 @@ app.get("/todos/:id", (req,res) => {                              //parameter al
 
 
 
+
+
 //Add PATCH request with path '/todos/:id
+
+
+
 
 
 
@@ -152,18 +157,27 @@ app.post("/todos/:id/complete", (req, res) => {
 app.delete("/todos/:id", (req, res) => {
   // console.log("this is a request id ", req.params.id);
   const id = req.params.id
+  // console.log(id)
+  
 
   const RemovedTodoFromCliet = todos.filter((todo) => todo.id !== id); //Only return the id's from the json file that are not equal to the id being called by the client. 
-  // console.log("everything but learn todo", RemovedTodoFromCliet); 
+   console.log("everything but learn todo", RemovedTodoFromCliet); 
   
-  fs.writeFileSync(todosAbsoluteFilePath, JSON.stringify(RemovedTodoFromCliet));
-  
-  if(RemovedTodoFromCliet){
+   console.log(todosAbsoluteFilePath)
+   fs.writeFileSync(todosAbsoluteFilePath, JSON.stringify(RemovedTodoFromCliet), err => {
+    if (err) {
+      console.error(err)
+      return
+    }});
+   
+    
+  if(RemovedTodoFromCliet){ //show the deleted todo?
     // res.header("Content-Type", "application/json"); 
-    res.status(200);
+    res.status(200).end();
+    
   } 
   else{  
-    res.status(400);
+    res.status(400).end();
   }   
 });
 
