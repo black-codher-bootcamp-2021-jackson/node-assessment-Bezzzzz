@@ -120,6 +120,33 @@ app.get("/todos/:id", (req,res) => {                              //parameter al
 
 
 //Add PATCH request with path '/todos/:id
+//either edit the name, the due date OR edit the name AND the due date
+
+app.patch("/todos/:id", (req, res) => {
+  const id = req.params.id
+  const attributes = req.body
+
+  const UpdatedTodo = todos.find((todo) => todo.id === id);           //id, attributes, todos.name
+  // console.log(UpdatedTodo.name)
+  // console.log(attributes.name) 
+
+  if(UpdatedTodo){
+    UpdatedTodo.name = attributes.name
+    // UpdatedTodo.due = attributes.due
+
+  }
+// console.log(UpdatedTodo)
+// console.log(todos)
+
+
+fs.writeFileSync(todosAbsoluteFilePath, JSON.stringify(todos)) //first argument is the path and the second is the content
+
+  res.status(200).end();
+
+})
+
+
+
 
 
 
@@ -129,12 +156,12 @@ app.get("/todos/:id", (req,res) => {                              //parameter al
 //Add POST request with path '/todos/:id/complete
 // Update todo, set attribute complete to true
 //PUT methoud allows for updating exsisting data 
-app.post("/todos/:id/complete", (req, res) => {
-   const id = req.params.id
-   console.log(id)
+// app.post("/todos/:id/complete", (req, res) => {
+//    const id = req.params.id
+//    console.log(id)
    
 
-})
+// })
 
 
 
