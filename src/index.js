@@ -40,16 +40,16 @@ app.get('/todos', (_, res) => {
 });
 
 
-// ***********WORKS BUT!-IN THE TERMINAL IT SHOWS OVERDUE BUT ON THE PATHWAY ON BROWSER NOTHING SHOWS***************
+// ***********WORKS***************
 //Add GET request with path '/todos/overdue'
 app.get("/todos/overdue", (req, res) => {
-   res.header("Content-Type", "application/ json"); 
+   res.header("Content-Type", "application/json"); //never have space between the / otherwise it won't work
      const date = new Date('29 January 2022 18:09 UTC')
     //  console.log(date.toISOString()) -works
 
     const overDueTodo = todos.find((todo) => date.toISOString() > todo.due && todo.completed === false); //if the current date is greater than the todo due date and not completed return this 
-    console.log(overDueTodo) //- //works shows the array overdue
-              //  res.send(overDueTodo);
+    // console.log(overDueTodo) //- //works shows the array overdue
+             res.send(overDueTodo);
              res.status(200);
   
      }
@@ -77,7 +77,7 @@ app.get ("/todos/completed", (req, res) => {
   res.header("Content-Type", "application/ json");
      
   // let currentDate = new Date('29 January 2022 18:09 UTC')
-  const completedTodo = todos.find((todo) => todo.completed == true);
+  const completedTodo = todos.find((todo) => todo.completed == todo.completed || true);
 
     console.log(completedTodo) 
   //  res.send(completedTodo); 
@@ -114,14 +114,13 @@ app.post("/todos", (req, res) => {
 
 
 
-// ******THIS DOESN'T GET ID- RETURNS HTTP ERROR 404******
+// ******THIS WORKS but only if id is todo.id ******
 app.get("/todos/:id", (req,res) => {                              //parameter always has a : in front of it then followed by the name
- 
+    res.header("Content-Type", "application/json"); 
       const id = req.params.id;                                 //  console.log("the first todo id: ", req.params.id); - checking to see if it returns
       const foundTodo = todos.find((todo) => todo.id == id);   //.find()- it will return one object that matches the criteria i am passing through, the .find must have a condition to it otherwise nothing is returned. 
 
         if(foundTodo){
-           res.header("Content-Type", "application/json"); 
             res.send(foundTodo);
             res.status(200)
          } 
@@ -133,17 +132,7 @@ app.get("/todos/:id", (req,res) => {                              //parameter al
 
 
 
-
-
 //Add PATCH request with path '/todos/:id
-
-
-
-
-
-
-
-
 
 
 
