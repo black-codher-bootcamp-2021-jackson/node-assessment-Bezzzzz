@@ -100,7 +100,7 @@ app.post("/todos", (req, res) => {
 
 
 
-// ******THIS WORKS but only if id is todo.id ******
+// ************THIS WORKS****************
 app.get("/todos/:id", (req,res) => {                              //parameter always has a : in front of it then followed by the name
     res.header("Content-Type", "application/json"); 
       const id = req.params.id;                                 //  console.log("the first todo id: ", req.params.id); - checking to see if it returns
@@ -111,7 +111,7 @@ app.get("/todos/:id", (req,res) => {                              //parameter al
             res.status(200)
          } 
          else{
-           res.status(404).end();
+           res.status(404);
            res.send("No todo found");
          }                                                  
 });
@@ -125,15 +125,12 @@ app.get("/todos/:id", (req,res) => {                              //parameter al
 //Add POST request with path '/todos/:id/complete
 // Update todo, set attribute complete to true
 //PUT methoud allows for updating exsisting data 
-app.put("/todos/:id/complete", (req, res) => {
+app.post("/todos/:id/complete", (req, res) => {
    const id = req.params.id
    console.log(id)
    
 
 })
-
-
-
 
 
 
