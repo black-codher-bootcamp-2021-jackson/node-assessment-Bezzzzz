@@ -88,7 +88,7 @@ app.post("/todos", (req, res) => {
   if(newTodosArray){
     res.header("Content-Type", "application/json"); 
     res.send("Created new Todo");
-    res.status(201).end();
+    res.status(200).end();
   } 
   else{  
     res.send("Incorrect data submitted");
@@ -118,7 +118,7 @@ app.get("/todos/:id", (req,res) => {                              //parameter al
 
 
 
-
+// ************************THIS WORKS********************************
 //Add PATCH request with path '/todos/:id
 //either edit the name, the due date OR edit the name AND the due date
 
@@ -130,13 +130,13 @@ app.patch("/todos/:id", (req, res) => {
   // console.log(UpdatedTodo.name)
   // console.log(attributes.name) 
 
-  if (UpdatedTodo) {
-    if (attributes.name !== undefined) {
-      UpdatedTodo.name = attributes.name                     // if attributes.name is equal then set it 
-    }
-    if (attributes.due !== undefined) { // due date is undefined because its not coming in the request body (attributes)
-      UpdatedTodo.due = attributes.due
-    }
+  if (UpdatedTodo) {                                          //if updatedTodo is different from undefined (true) then proceed with the if statements otherwise show the else statement.
+      if (attributes.name !== undefined) {                      //if the name is not given in the patch request in postman then show undefined in the terminal. If it is given then update the name in postman  
+        UpdatedTodo.name = attributes.name                     // if attributes.name is equal then set it 
+      }
+      if (attributes.due !== undefined) {                      // due date is undefined because its not coming in the request body (attributes)
+        UpdatedTodo.due = attributes.due
+      }
 
     fs.writeFileSync(todosAbsoluteFilePath, JSON.stringify(todos)) //first argument is the path and the second is the content
 
@@ -144,6 +144,7 @@ app.patch("/todos/:id", (req, res) => {
     res.send(UpdatedTodo);
 
   } else {
+    // if UpdatedTodo is undefined, i.e., does not exit with that id
     res.status(400);
     res.send("That todo does not exist");
   }
@@ -152,28 +153,58 @@ app.patch("/todos/:id", (req, res) => {
 
 
 
-
-
-
-
-
-
 //Add POST request with path '/todos/:id/complete
 // Update todo, set attribute complete to true
-//PUT methoud allows for updating exsisting data 
-// app.post("/todos/:id/complete", (req, res) => {
-//    const id = req.params.id
-//    console.log(id)
-   
+//PUT and POST methoud allows for updating exsisting data 
 
-// })
+app.post("/todos/:id/complete", (req, res) => {
+   const id = req.params.id
+   const CompleteTodo = todos.find((todo) => todo.id ==id);
+  //  console.log(CompleteTodo)
 
+  if(CompleteTodo){
+      CompleteTodo.completed = true
+  
 
-
+      fs.writeFileSync(todosAbsoluteFilePath, JSON.stringify(todos))
+      
+      res.status(200);
+      res.send(CompleteTodo)
+    }
+    
+  else {
+    // if UpdatedTodo is undefined, i.e., does not exit with that id
+    res.status(400);
+    res.send("Bad Request) if invalid id");
+  }
+})
 
 
 
 //Add POST request with path '/todos/:id/undo
+
+app.post("/todos/:id/undo", (req, res) => {
+  const id = req.params.id
+  const UndoTodo = todos.find((todo) => todo.id ==id);
+ //  console.log(CompleteTodo)
+
+ if(UndoTodo){
+     UndoTodo.completed = false
+ 
+     fs.writeFileSync(todosAbsoluteFilePath, JSON.stringify(todos))
+     
+     res.status(200);
+     res.send(UndoTodo)
+   }
+   
+ else {
+   // if UpdatedTodo is undefined, i.e., does not exit with that id
+   res.status(400);
+   res.send("Bad Request) if invalid id");
+ }
+})
+
+
 
 
 
