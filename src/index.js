@@ -25,9 +25,10 @@ app.use("/content", express.static(path.join(__dirname, "public"))); //allows fo
 
 // *********THIS WORKS **********
 app.get("/", (_, res) => {
-  res.header("Content-Type", "application/html");
-  res.sendFile("./public/index.html", { root: __dirname });
+  // res.header("Content-Type", "application/html");
   res.status(200);
+  res.sendFile("/public/index.html", { root: __dirname });
+  
 });
 
 
