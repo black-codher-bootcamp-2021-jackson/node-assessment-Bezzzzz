@@ -228,12 +228,12 @@ app.delete("/todos/:id", (req, res) => {
    
     
   if(RemovedTodoFromCliet){ //show the deleted todo?
-    // res.header("Content-Type", "application/json"); 
+    res.header("Content-Type", "application/json"); 
     res.status(200);
     
   } 
   else{  
-    res.status(400);
+    res.status(400).end();
   }   
 });
 
