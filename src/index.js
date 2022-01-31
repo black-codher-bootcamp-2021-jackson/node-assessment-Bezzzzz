@@ -46,7 +46,7 @@ app.get("/todos/overdue", (req, res) => {
      const date = new Date('29 January 2022 18:09 UTC')
     //  console.log(date.toISOString()) -works
 
-    const overDueTodo = todos.find((todo) => date.toISOString() > todo.due && todo.completed === false); //if the current date is greater than the todo due date and not completed return this 
+    const overDueTodo = todos.filter((todo) => date.toISOString() > todo.due && todo.completed === false); //if the current date is greater than the todo due date and not completed return this 
     // console.log(overDueTodo) //- //works shows the array overdue
              res.send(overDueTodo);
              res.status(200);
@@ -72,7 +72,7 @@ app.get ("/todos/completed", (req, res) => {
 
 
 
-// ********THIS WORKS*******
+// ********NOT PASSING TEST******* 
 //Add POST request with path '/todos'
 //Add a new todo to the todo list 
 
@@ -88,7 +88,7 @@ app.post("/todos", (req, res) => {
   if(newTodosArray){
     res.header("Content-Type", "application/json"); 
     res.send("Created new Todo");
-    res.status(200).end();
+    res.status(201).end();
   } 
   else{  
     res.send("Incorrect data submitted");
@@ -207,14 +207,7 @@ app.post("/todos/:id/undo", (req, res) => {
 
 
 
-
-
-
-
-
-
-
-//  *****THIS WORKS*****
+//  *****NOT PASSING TEST*****
 // Add DELETE request with path '/todos/:id
 app.delete("/todos/:id", (req, res) => {
   // console.log("this is a request id ", req.params.id);
@@ -235,11 +228,11 @@ app.delete("/todos/:id", (req, res) => {
     
   if(RemovedTodoFromCliet){ //show the deleted todo?
     // res.header("Content-Type", "application/json"); 
-    res.status(200).end();
+    res.status(200);
     
   } 
   else{  
-    res.status(400).end();
+    res.status(400);
   }   
 });
 
