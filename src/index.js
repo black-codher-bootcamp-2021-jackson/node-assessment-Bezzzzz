@@ -82,11 +82,11 @@ app.post("/todos", (req, res) => {
       const newTodo = req.body;
       // console.log("old todos", todos); 
 
-      const newTodosArray = [...todos, newTodo]; //instead of modifying the current this creates a new array
+ if(true){
+     const newTodosArray = [...todos, newTodo]; //instead of modifying the current this creates a new array
   
-  fs.writeFileSync(todosAbsoluteFilePath, JSON.stringify(newTodosArray)) //json.stringify changes the context to a string that json can read
+    fs.writeFileSync(todosAbsoluteFilePath, JSON.stringify(newTodosArray)) //json.stringify changes the context to a string that json can read
 
-  if(newTodosArray){
     res.header("Content-Type", "application/json"); 
     res.send("Created new Todo");
     res.status(201).end();
@@ -208,28 +208,29 @@ app.post("/todos/:id/undo", (req, res) => {
 
 
 
-//  *****NOT PASSING TEST*****
+//  ****PASSING TEST*****
 // Add DELETE request with path '/todos/:id
 app.delete("/todos/:id", (req, res) => {
   // console.log("this is a request id ", req.params.id);
   const id = req.params.id
   // console.log(id)
   
+  const todoexsists= todos.some(todo => todo.id === id) //.some() passes back true or false
 
+     
+  if(todoexsists){ //show the deleted todo?
   const RemovedTodoFromCliet = todos.filter((todo) => todo.id !== id); //Only return the id's from the json file that are not equal to the id being called by the client. 
-   console.log("everything but learn todo", RemovedTodoFromCliet); 
+  
+  //  console.log("everything but learn todo", RemovedTodoFromCliet); 
   
    console.log(todosAbsoluteFilePath)
    fs.writeFileSync(todosAbsoluteFilePath, JSON.stringify(RemovedTodoFromCliet), err => {
     if (err) {
       console.error(err)
       return
-    }});
-   
-    
-  if(RemovedTodoFromCliet){ //show the deleted todo?
+    }}); 
     res.header("Content-Type", "application/json"); 
-    res.status(200);
+    res.status(200).end();
     
   } 
   else{  
