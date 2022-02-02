@@ -20,17 +20,23 @@ app.use(express.raw());
 app.use(bodyParser.json()); // allows to send metadata to the header
 
 
-app.use("/content", express.static(path.join(__dirname, "public"))); //allows for static content from the html to be seen on localhost:8080/content
+app.use("/content", express.static(path.join(__dirname, "public")));      //allows for static content from the html to be seen on localhost:8080/content
+
+
+
 
 
 app.get("/", (_, res) => {
-  // res.header("Content-Type", "application/html"); doesn't work when this is commented in
+  // res.header("Content-Type", "application/html");              // doesn't work when this is commented in just creattes a download empty text file.
   res.status(200);
   res.sendFile("/public/index.html", { root: __dirname });
   
 });
 
 
+
+
+//shows a list of all the todos in the JSON file
 app.get('/todos', (_, res) => {
   res.header("Content-Type", "application/json");
   res.status(200);
@@ -38,17 +44,20 @@ app.get('/todos', (_, res) => {
 });
 
 
+
+
+
 //Add GET request with path '/todos/overdue'
 app.get("/todos/overdue", (req, res) => {
-  res.header("Content-Type", "application/json");                                                       //never have space between the / otherwise it won't work
+res.header("Content-Type", "application/json");                                                              //never have space between the / otherwise it won't work
    
   const date = new Date('29 January 2022 18:09 UTC')
                                                                                                              //  console.log(date.toISOString()) -works
 
-  const overDueTodo = todos.filter((todo) => date.toISOString() > todo.due && todo.completed === false); //if the current date is greater than the todo due date and not completed return this 
-                                                                                                           // console.log(overDueTodo) //- //works shows the array overdue
-             res.send(overDueTodo);
-             res.status(200);
+  const overDueTodo = todos.filter((todo) => date.toISOString() > todo.due && todo.completed === false);     //if the current date is greater than the todo due date and not completed return this 
+                                                                                                              // console.log(overDueTodo) //- //works shows the array overdue
+    res.send(overDueTodo);
+    res.status(200);
   
      }
 );
@@ -61,7 +70,7 @@ app.get ("/todos/completed", (req, res) => {
 
 res.header("Content-Type", "application/json");
      
-const completedTodo = todos.filter((todo) => todo.completed === true);              //filter method will bring all the data that matches the condition however if you use the .find it only shows the first data that matches and not the rest.
+const completedTodo = todos.filter((todo) => todo.completed === true);                     //filter method will bring all the data that matches the condition however if you use the .find it only shows the first data that matches and not the rest.
 
    res.send(completedTodo); 
    res.status(200);     
@@ -72,26 +81,25 @@ const completedTodo = todos.filter((todo) => todo.completed === true);          
 
 
 
-// ********NOT PASSING TEST******* 
 //Add POST request with path '/todos'
 //Add a new todo to the todo list 
 
 app.post("/todos", (req, res) => {
   const newTodo = req.body;
 
-  // in the request body it should specifiy the due and name because the code without if statements allows for all todos to be created regardless of if the attribute is there.
-  // name and due are keys of req.body (request body)
-  // if (["name", "due"] !== Object.keys(newTodo)) {
-  if (newTodo.name === undefined || newTodo.due === undefined) {
+                                                                            // in the request body it should specifiy the due and name because the code without if statements allows for all todos to be created regardless of if the attribute is there.
+                                                                            // name and due are keys of req.body (request body)
+                                                                            // if (["name", "due"] !== Object.keys(newTodo)) // Object.keys is the attributes in the json fike such as name, due, id etc. So in this other way you can say name and due must be present in the new todo being createed as that matches the keys(attributes) already in the json file. SO ypu can say if name and due is not created in this new req.body then give a 400 status but if it is created then say status 200 - new todo cretaed
+  if (newTodo.name === undefined || newTodo.due === undefined) {            //if the req body being cretaed does't have a name so it's undefined or due is undefined or one is created and the other is undefined then send back a 400 status and a messege saying incorrect date submitted. 
     res.status(400);
     res.send("Incorrect data submitted");
-
-  } else {
-    newTodo.completed = false
+     } 
+  else {  //if the todo being created has got a name and due then cretae a completed and set this ti false and create a date of that current date it's being created on, then create a new array and sync this to the file and then send a status code of 200 with a messege saying cretaed new todo. 
+    newTodo.completed = false 
     newTodo.created = new Date().toISOString()
 
-    const newTodosArray = [...todos, newTodo];
-    //instead of modifying the current this creates a new array
+  const newTodosArray = [...todos, newTodo];              //instead of modifying the current this creates a new array
+  
 
     fs.writeFileSync(todosAbsoluteFilePath, JSON.stringify(newTodosArray))               //json.stringify changes the context to a string that json can read
 
@@ -226,6 +234,7 @@ app.delete("/todos/:id", (req, res) => {
   if(todoexsists){ 
     const RemovedTodoFromCliet = todos.filter((todo) => todo.id !== id);         //Only return the id's from the json file that are not equal to the id being called by the client. 
     console.log(todosAbsoluteFilePath)
+    
     fs.writeFileSync(todosAbsoluteFilePath, JSON.stringify(RemovedTodoFromCliet), err => {
       if (err) {
         console.error(err)
